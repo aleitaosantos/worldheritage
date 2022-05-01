@@ -1,9 +1,31 @@
 import './style.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import * as dat from 'lil-gui'
+
+
+
+
+// fetch('/xml/whc-en.xml')
+// .then((r) => {
+//     console.log('Resolved', r)
+//     return r.()
+// })
+// .then((data) => {
+//     console.log(data)
+// })
+// .catch((e) => {
+//     console.log('Error!', e)
+// })
+
+
+// Textures
+const textureLoader = new THREE.TextureLoader()
+const earthColorTexture = textureLoader.load('/textures/earth/8k_earth_daymap.jpg')
+
+
 
 /**
  * Base
@@ -29,73 +51,90 @@ let mixer = null
 
 let radius = 1
 
-const globeGeometry = new THREE.SphereGeometry(radius, 72, 36)
-const dirGlobeGeometry = new THREE.SphereGeometry(radius * 2, 72, 36)
-const globeMaterial = new THREE.MeshStandardMaterial({
+const earthGeometry = new THREE.SphereGeometry(radius, 72, 36)
+const dirEarthGeometry = new THREE.SphereGeometry(radius * 2, 72, 36)
+const earthMaterial = new THREE.MeshStandardMaterial({
   color: '#444',
   metalness: 0,
   roughness: 0.5,
-  wireframe: true
+  wireframe: false,
+  map: earthColorTexture,
 })
 
 
-const globe = new THREE.Mesh (globeGeometry, globeMaterial)
-const dirGlobe = new THREE.Mesh (dirGlobeGeometry, globeMaterial)
-
-let latitude, longitude 
-
-const location = {}
-location.latitude = 30 
-location.longitude = 45
-
-const phi = (- location.latitude + 90)/180 * Math.PI
-const theta = (location.longitude + 180)/180 * Math.PI
-
+const earth = new THREE.Mesh (earthGeometry, earthMaterial)
 const point = new THREE.Vector3()
-point.setFromSphericalCoords(radius, phi, theta)
 
-console.log(point)
-scene.add(globe)
-
-const globeNormal = new THREE.ArrowHelper(point, point, 0.1)
-scene.add(globeNormal)
-console.log(globeNormal)
+scene.add(earth)
 
 
-const planeGeometry = new THREE.PlaneGeometry(0.1, 0.1)
-const planeMaterial = new THREE.MeshBasicMaterial({
-  color: 0xff0,
-  side: THREE.DoubleSide
-})
-const plane = new THREE.Mesh(planeGeometry, planeMaterial)
-console.log(point)
-plane.position.x = globeNormal.position.x
-plane.position.y = globeNormal.position.y
-plane.position.z = globeNormal.position.z
-plane.quaternion.w = globeNormal.quaternion.w
-plane.quaternion.x = globeNormal.quaternion.x
-plane.quaternion.y = globeNormal.quaternion.y
-plane.quaternion.z = globeNormal.quaternion.z
-// plane.lookAt(globe)
-scene.add(plane)
+const sites = {}
+const url = '/xml/whc-en.xml';
+const xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+        const xmlDoc = this.responseXML;
+        for(let i = 0; i < xmlDoc.getElementsByTagName('row').length; i++) {
+            let row = xmlDoc.getElementsByTagName('row')[i]        
+            let id = 'id' + row.getElementsByTagName('id_number')[0].innerHTML
+            sites[id] = {}
+            sites[id]['site'] = row.getElementsByTagName('site')[0].innerHTML
+            sites[id]['category'] = row.getElementsByTagName('category')[0].innerHTML
+            sites[id]['dateInscribed'] = Number(row.getElementsByTagName('date_inscribed')[0].innerHTML)
+            sites[id]['latitude'] = Number(row.getElementsByTagName('latitude')[0].innerHTML)
+            sites[id]['longitude'] = Number(row.getElementsByTagName('longitude')[0].innerHTML)
+            sites[id]['phi'] = (- sites[id]['latitude'] + 90)/180 * Math.PI
+            sites[id]['theta'] = (sites[id]['longitude'] + 90)/180 * Math.PI
+            point.setFromSphericalCoords(radius, sites[id]['phi'], sites[id]['theta'])
+            sites[id]['pointGeometry'] = new THREE.SphereGeometry(0.0025, 36, 18)
+            sites[id]['pointMaterial'] = new THREE.MeshBasicMaterial()
+            switch (sites[id]['category']) {
+                case 'Natural':
+                    sites[id]['pointMaterial'].color = new THREE.Color(0x00ff00)
+                    break
+                case 'Cultural':
+                    sites[id]['pointMaterial'].color = new THREE.Color(0xff0000)
+                    break
+                case 'Mixed':
+                    sites[id]['pointMaterial'].color = new THREE.Color(0xffff00)
+                    break
+            }
+            sites[id]['pointMesh'] = new THREE.Mesh(sites[id]['pointGeometry'], sites[id]['pointMaterial'])
+            sites[id]['pointMesh'].position.set(point.x, point.y, point.z)
+            scene.add(sites[id]['pointMesh'])
+        }
+    }
+}
+xhr.open('GET', url, true);
+xhr.send(null);    
+
+console.log(sites)
+
+
+// for (let i = 0; i < Object.keys(sites).length; i++) {
+    //     let phi = (- Object.keys(sites)[i].latitude + 90)/180 * Math.PI
+    //     let theta = (location.longitude + 90)/180 * Math.PI
+    // }
+    
+
 
 
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+const ambientLight = new THREE.AmbientLight(0xffffff, 2)
 scene.add(ambientLight)
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-directionalLight.castShadow = true
-directionalLight.shadow.mapSize.set(1024, 1024)
-directionalLight.shadow.camera.far = 15
-directionalLight.shadow.camera.left = - 7
-directionalLight.shadow.camera.top = 7
-directionalLight.shadow.camera.right = 7
-directionalLight.shadow.camera.bottom = - 7
-directionalLight.position.set(5, 5, 5)
-scene.add(directionalLight)
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
+// directionalLight.castShadow = true
+// directionalLight.shadow.mapSize.set(1024, 1024)
+// directionalLight.shadow.camera.far = 15
+// directionalLight.shadow.camera.left = - 7
+// directionalLight.shadow.camera.top = 7
+// directionalLight.shadow.camera.right = 7
+// directionalLight.shadow.camera.bottom = - 7
+// directionalLight.position.set(5, 5, 5)
+// scene.add(directionalLight)
 
 /**
  * Sizes
@@ -104,6 +143,26 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
+
+/**
+ * Camera
+ */
+// Base camera
+const camera = new THREE.PerspectiveCamera(60, sizes.width / sizes.height, 0.1, 100)
+camera.position.set(0, 0, 2)
+scene.add(camera)
+
+
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 window.addEventListener('resize', () =>
 {
@@ -120,29 +179,13 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(2, 2, 2)
-scene.add(camera)
-
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 0.75, 0)
-controls.enableDamping = true
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
-})
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+const controls = new ArcballControls( camera, renderer.domElement, scene )
+controls.target.set(0, 0, 0)
+controls.dampingFactor = 2.5
+controls.enablePan = false
+controls.maxDistance = 2.5
+controls.minDistance = 1.25
 
 /**
  * Animate
