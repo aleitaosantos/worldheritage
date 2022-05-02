@@ -1,25 +1,10 @@
 import './style.css'
 import * as THREE from 'three'
-import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls.js'
+// import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import * as dat from 'lil-gui'
-
-
-
-
-// fetch('/xml/whc-en.xml')
-// .then((r) => {
-//     console.log('Resolved', r)
-//     return r.()
-// })
-// .then((data) => {
-//     console.log(data)
-// })
-// .catch((e) => {
-//     console.log('Error!', e)
-// })
-
 
 // Textures
 const textureLoader = new THREE.TextureLoader()
@@ -105,19 +90,8 @@ xhr.onreadystatechange = function() {
         }
     }
 }
-xhr.open('GET', url, true);
-xhr.send(null);    
-
-console.log(sites)
-
-
-// for (let i = 0; i < Object.keys(sites).length; i++) {
-    //     let phi = (- Object.keys(sites)[i].latitude + 90)/180 * Math.PI
-    //     let theta = (location.longitude + 90)/180 * Math.PI
-    // }
-    
-
-
+xhr.open('GET', url, true)
+xhr.send(null)
 
 /**
  * Lights
@@ -180,12 +154,13 @@ window.addEventListener('resize', () =>
 })
 
 // Controls
-const controls = new ArcballControls( camera, renderer.domElement, scene )
+const controls = new OrbitControls( camera, renderer.domElement )
 controls.target.set(0, 0, 0)
 controls.dampingFactor = 2.5
 controls.enablePan = false
-controls.maxDistance = 2.5
+controls.maxDistance = 5
 controls.minDistance = 1.25
+
 
 /**
  * Animate
