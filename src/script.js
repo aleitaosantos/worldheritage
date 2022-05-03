@@ -36,7 +36,6 @@ let mixer = null
 let radius = 1
 
 const earthGeometry = new THREE.SphereGeometry(radius, 72, 36)
-const dirEarthGeometry = new THREE.SphereGeometry(radius * 2, 72, 36)
 const earthMaterial = new THREE.MeshStandardMaterial({
   color: '#444',
   metalness: 0,
@@ -70,22 +69,25 @@ xhr.onreadystatechange = function() {
             sites[id]['phi'] = (- sites[id]['latitude'] + 90)/180 * Math.PI
             sites[id]['theta'] = (sites[id]['longitude'] + 90)/180 * Math.PI
             point.setFromSphericalCoords(radius, sites[id]['phi'], sites[id]['theta'])
-            sites[id]['pointGeometry'] = new THREE.SphereGeometry(0.0025, 36, 18)
-            sites[id]['pointMaterial'] = new THREE.MeshBasicMaterial()
+            sites[id]['siteGeometry'] = new THREE.PlaneGeometry(0.005, 0.005)            
+            sites[id]['siteMaterial'] = new THREE.MeshBasicMaterial({
+                side: THREE.BackSide
+            })
             switch (sites[id]['category']) {
                 case 'Natural':
-                    sites[id]['pointMaterial'].color = new THREE.Color(0x00ff00)
+                    sites[id]['siteMaterial'].color = new THREE.Color(0x00ff00)
                     break
                 case 'Cultural':
-                    sites[id]['pointMaterial'].color = new THREE.Color(0xff0000)
+                    sites[id]['siteMaterial'].color = new THREE.Color(0xff0000)
                     break
                 case 'Mixed':
-                    sites[id]['pointMaterial'].color = new THREE.Color(0xffff00)
+                    sites[id]['siteMaterial'].color = new THREE.Color(0xffff00)
                     break
             }
-            sites[id]['pointMesh'] = new THREE.Mesh(sites[id]['pointGeometry'], sites[id]['pointMaterial'])
-            sites[id]['pointMesh'].position.set(point.x, point.y, point.z)
-            scene.add(sites[id]['pointMesh'])
+            sites[id]['siteMesh'] = new THREE.Mesh(sites[id]['siteGeometry'], sites[id]['siteMaterial'])
+            sites[id]['siteMesh'].position.set(point.x, point.y, point.z)
+            sites[id]['siteMesh'].lookAt(0, 0, 0)
+            scene.add(sites[id]['siteMesh'])
         }
     }
 }
@@ -122,7 +124,7 @@ const sizes = {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(60, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(0, 0, 2)
+camera.position.set(0 , 0, 2)
 scene.add(camera)
 
 
