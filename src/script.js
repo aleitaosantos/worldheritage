@@ -8,7 +8,7 @@ import * as dat from 'lil-gui'
 // Textures
 const textureLoader = new THREE.TextureLoader()
 const earthColorTexture = textureLoader.load('/textures/earth/8k_earth_daymap.jpg')
-
+const placeTexture = textureLoader.load('/textures/place.png')
 
 
 /**
@@ -71,7 +71,11 @@ xhr.onreadystatechange = function() {
             point.setFromSphericalCoords(radius, sites[id]['phi'], sites[id]['theta'])
             sites[id]['siteGeometry'] = new THREE.PlaneGeometry(0.005, 0.005)            
             sites[id]['siteMaterial'] = new THREE.MeshBasicMaterial({
-                side: THREE.BackSide
+                side: THREE.DoubleSide,
+                transparent: true,
+                alphaMap: placeTexture,
+                depthWrite: false,
+
             })
             switch (sites[id]['category']) {
                 case 'Natural':
@@ -93,6 +97,8 @@ xhr.onreadystatechange = function() {
 }
 xhr.open('GET', url, true)
 xhr.send(null)
+
+console.log(sites)
 
 /**
  * Lights
