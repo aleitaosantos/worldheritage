@@ -1,17 +1,18 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
-html,
-body
-{
+html, body {
     overflow: hidden;
 }
 
-.webgl
-{
+body {
+    background: linear-gradient(45deg, #ccc 0%, #fff 100%);
+    background-attachment: fixed;
+}
+
+.webgl {
     position: fixed;
     top: 0;
     left: 0;
