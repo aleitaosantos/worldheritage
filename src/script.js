@@ -27,20 +27,24 @@ function init() {
     scene.add( camera );
 
     // Lights
-    const ambientLight = new THREE.AmbientLight( 0xffffff, 5 );
-    scene.add( ambientLight );
+    const ambientLight = new THREE.AmbientLight( 0xffcccc, 1 );
+
+    const directionalLight = new THREE.DirectionalLight( 0xccffff, 2 );
+    directionalLight.position.set( 2.5, 2.5, 2.5 )
+
+    scene.add( ambientLight, directionalLight );
 
     //
-
-    // Textures
-    const placeTexture = textureLoader.load( '/textures/place.png' );
 
     // Earth
     const earthRadius = 1;
     const earthGeometry = new THREE.SphereGeometry( earthRadius, 180, 90 );
     const earthMaterial = new THREE.MeshStandardMaterial( {
         color: '#444',
-        map: textureLoader.load( '/textures/earth/8k_earth_daymap.jpg' ),
+        map: textureLoader.load( '/textures/earth/8k_earth_map.png' ),
+        roughness: 0.5,
+        roughnessMap: textureLoader.load( '/textures/earth/8k_earth_specular.png' ),
+        metalness: 0.25,
         metalness: 0,
         roughness: 0.5,
         wireframe: false,
@@ -76,7 +80,7 @@ function init() {
                 // sites[ id ][ 'siteMaterial' ] = new THREE.MeshBasicMaterial( {
                 //     side: THREE.DoubleSide,
                 //     transparent: true,
-                //     alphaMap: placeTexture,
+                //     alphaMap: textureLoader.load( '/textures/place.png' ),
                 //     depthWrite: false,
                 // } );
 
@@ -122,6 +126,7 @@ function init() {
     renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
     renderer.setSize( sizes.width, sizes.height );
+    renderer.domElement.style.zIndex = '0';
     document.body.appendChild( renderer.domElement );
 
     // CSS2D Renderer
@@ -129,6 +134,7 @@ function init() {
     css2DRenderer.setSize( sizes.width, sizes.height );
     css2DRenderer.domElement.style.position = 'absolute';
     css2DRenderer.domElement.style.top = '0px';
+    css2DRenderer.domElement.style.zIndex = '1';
     document.body.appendChild( css2DRenderer.domElement );
 
 
@@ -156,7 +162,8 @@ function init() {
 
 function labelsDistanceTest() {
     Object.keys( sites ).forEach( id => {
-        if ( sites[ id ].label.position.distanceTo( camera.position ) > earth.position.distanceTo( camera.position ) ) {
+        if ( sites[ id ].label.position.distanceTo( camera.position ) >
+            earth.position.distanceTo( camera.position ) * Math.cos( camera.fov * Math.PI / 360 ) ) {
             sites[ id ].labelDiv.style.visibility = 'hidden'
         } else {
             sites[ id ].labelDiv.style.visibility = 'visible'

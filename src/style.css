@@ -12,15 +12,12 @@ body {
     background-attachment: fixed;
 }
 
-.webgl {
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
-}
-
 .label {
     color: #FFF;
     font-family: sans-serif;
-    -webkit-text-stroke: 1px #000;
+    -webkit-text-stroke: 1px #333;
+}
+
+.label:hover {
+    color: #FFF;
 }
