@@ -18,3 +18,9 @@ body {
     left: 0;
     outline: none;
 }
+
+.label {
+    color: #FFF;
+    font-family: sans-serif;
+    -webkit-text-stroke: 1px #000;
+}
