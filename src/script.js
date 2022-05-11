@@ -54,8 +54,8 @@ function init() {
 
     // Sites
     place = new THREE.Vector3();
-    // const sitesSrc = '/xml/whc-en.xml';
-    const sitesSrc = 'https://whc.unesco.org/en/list/xml';
+    const sitesSrc = '/xml/whc-en.xml';
+    // const sitesSrc = 'https://whc.unesco.org/en/list/xml';
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if ( xhr.readyState == XMLHttpRequest.DONE ) {
