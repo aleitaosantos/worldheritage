@@ -5,7 +5,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 
 import './style.css';
 
-let camera, scene, controls, renderer, earth, id, place, sitesListSize, css2DRenderer;
+let camera, scene, controls, renderer, earth, earthRadius, id, place, sitesListSize, css2DRenderer;
 
 const clock = new THREE.Clock();
 const textureLoader = new THREE.TextureLoader();
@@ -37,7 +37,7 @@ function init() {
     //
 
     // Earth
-    const earthRadius = 1;
+    earthRadius = 1;
     const earthGeometry = new THREE.SphereGeometry( earthRadius, 180, 90 );
     const earthMaterial = new THREE.MeshStandardMaterial( {
         color: '#444',
@@ -54,7 +54,8 @@ function init() {
 
     // Sites
     place = new THREE.Vector3();
-    const sitesSrc = '/xml/whc-en.xml';
+    // const sitesSrc = '/xml/whc-en.xml';
+    const sitesSrc = 'https://whc.unesco.org/en/list/xml';
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if ( xhr.readyState == XMLHttpRequest.DONE ) {
@@ -163,13 +164,15 @@ function init() {
 function labelsDistanceTest() {
     Object.keys( sites ).forEach( id => {
         if ( sites[ id ].label.position.distanceTo( camera.position ) >
-            earth.position.distanceTo( camera.position ) * Math.cos( camera.fov * Math.PI / 360 ) ) {
+            Math.sqrt( ( earth.position.distanceTo( camera.position ) ** 2 ) - ( earthRadius ** 2 ) ) ) {
             sites[ id ].labelDiv.style.visibility = 'hidden'
         } else {
             sites[ id ].labelDiv.style.visibility = 'visible'
         }
     } );
 }
+
+
 
 function onWindowResize() {
 
