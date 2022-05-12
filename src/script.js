@@ -30,7 +30,7 @@ function init() {
     const ambientLight = new THREE.AmbientLight( 0xffcccc, 1 );
 
     directionalLight = new THREE.DirectionalLight( 0xccffff, 2 );
-    directionalLight.position.set( 2.5, 2.5, -2.5 )
+    directionalLight.position.set( 2.5, 1.25, -2.5 )
 
     scene.add( ambientLight, directionalLight );
 
@@ -210,8 +210,8 @@ function animate() {
     labelsDistanceTest()
 
     // Update objects
-    directionalLight.position.x = Math.sin( elapsedTime / 16.666 ) * 2.5
-    directionalLight.position.z = - Math.cos( elapsedTime / 16.666 ) * 2.5
+    directionalLight.position.x = Math.sin( elapsedTime / 10 ) * 2.5
+    directionalLight.position.z = - Math.cos( elapsedTime / 10 ) * 2.5
 
     // Update Renderers
     renderer.render( scene, camera );
