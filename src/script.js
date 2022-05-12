@@ -5,7 +5,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 
 import './style.css';
 
-let camera, scene, controls, renderer, earth, earthRadius, id, place, sitesListSize, css2DRenderer;
+let camera, scene, controls, renderer, directionalLight, earth, earthRadius, id, place, sitesListSize, css2DRenderer;
 
 const clock = new THREE.Clock();
 const textureLoader = new THREE.TextureLoader();
@@ -29,8 +29,8 @@ function init() {
     // Lights
     const ambientLight = new THREE.AmbientLight( 0xffcccc, 1 );
 
-    const directionalLight = new THREE.DirectionalLight( 0xccffff, 2 );
-    directionalLight.position.set( 2.5, 2.5, 2.5 )
+    directionalLight = new THREE.DirectionalLight( 0xccffff, 2 );
+    directionalLight.position.set( 2.5, 2.5, -2.5 )
 
     scene.add( ambientLight, directionalLight );
 
@@ -44,6 +44,7 @@ function init() {
         map: textureLoader.load( '/textures/earth/8k_earth_map.png' ),
         roughness: 0.5,
         roughnessMap: textureLoader.load( '/textures/earth/8k_earth_specular.png' ),
+        normalMap: textureLoader.load( '/textures/earth/8k_earth_normal_map.png' ),
         metalness: 0.25,
         metalness: 0,
         roughness: 0.5,
@@ -116,8 +117,8 @@ function init() {
             }
         }
     };
-    xhr.open( 'GET', sitesSrc, true );
-    xhr.send( null );
+    xhr.open( 'GET', sitesSrc );
+    xhr.send();
 
     console.log( sites );
 
@@ -143,11 +144,12 @@ function init() {
     controls = new OrbitControls( camera, css2DRenderer.domElement );
     controls.target.set( 0, 0, 0 );
     controls.autoRotate = true;
+    controls.autoRotateSpeed = 2;
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.enablePan = false;
     controls.maxDistance = 5;
-    controls.minDistance = 1.025;
+    controls.minDistance = 1.10;
     controls.rotateSpeed = Math.sqrt( earth.position.distanceTo( camera.position ) - 1 );
     window.addEventListener(
         'click',
@@ -184,6 +186,9 @@ function onWindowResize() {
     camera.aspect = sizes.width / sizes.height;
     camera.updateProjectionMatrix();
 
+    // Update Labels
+    labelsDistanceTest()
+
     // Update Renderers
     renderer.setSize( sizes.width, sizes.height );
 
@@ -201,7 +206,12 @@ function animate() {
     controls.update();
     controls.rotateSpeed = Math.sqrt( earth.position.distanceTo( camera.position ) - 1 );
 
+    // Update Labels
     labelsDistanceTest()
+
+    // Update objects
+    directionalLight.position.x = Math.sin( elapsedTime / 16.666 ) * 2.5
+    directionalLight.position.z = - Math.cos( elapsedTime / 16.666 ) * 2.5
 
     // Update Renderers
     renderer.render( scene, camera );

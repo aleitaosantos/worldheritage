@@ -8,16 +8,18 @@ html, body {
 }
 
 body {
-    background: linear-gradient(45deg, #ccc 0%, #fff 100%);
+    background: radial-gradient(circle, #dae5e5 0%, #e5dada 100%);
     background-attachment: fixed;
 }
 
 .label {
-    color: #FFF;
+    color: #fff;
     font-family: sans-serif;
+    transition: -webkit-text-stroke 500ms;
     -webkit-text-stroke: 1px #333;
 }
 
 .label:hover {
-    color: #FFF;
+    -webkit-text-stroke: 1px #fff;
+    cursor: pointer;
 }
