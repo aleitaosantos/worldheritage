@@ -118,7 +118,7 @@ footer {
 
 .slider-labels {
     display: flex;    
-    justify-content: space-between;
+    justify-content: center;
     font-family: 'Archivo Narrow', sans-serif;
     color: #555050;
     margin-bottom: 0.5em;
@@ -145,6 +145,7 @@ footer {
     border-radius: 50%;
     background: #555050; /* Green background */
     cursor: pointer; /* Cursor on hover */
+    
 }
   
 .slider::-moz-range-thumb {

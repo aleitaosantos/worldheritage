@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="anhumas.css">
+</head>
+
+<body>
+  <div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="820px" height="100px" version="1.1"
+      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+      viewBox="0 0 820 100" <defs>
+
+
+        <filter id="inset-shadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feComponentTransfer in=SourceAlpha>
+          <feFuncA type="table" tableValues="0.5 1" />
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feOffset in="blur" dx="5" dy="5" result="offsetblur1"/>
+        <feOffset in="blur" dx="-5" dy="-5" result="offsetblur2"/>
+        <feFlood flood-color="white"/>
+        <feComposite in2="offsetblur1" operator="in" />
+        <feComposite in2="offsetblur2" operator="xor" />
+        <feComposite in2="SourceAlpha" operator="in" />
+        <feMerge>
+          <feMergeNode in="SourceGraphic" />
+          <feMergeNode />
+        </feMerge>
+      </filter>
+      </defs>
+      <g id="anhumas">
+        <path
+          d="M120 100l20 0 0 -80 30 0c16.57,0 30,13.43 30,30l0 50 20 0 0 -50c0,-27.61 -22.39,-50 -50,-50l-50 0 0 100z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+        <path
+          d="M320 0l20 0 0 50 0 20 0 30 -20 0 0 -30 -30 0c-16.57,0 -30,13.43 -30,30l-20 0 0 -100 20 0 0 60c8.36,-6.28 18.74,-10 30,-10l30 0 0 -50z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+        <path
+          d="M360 50l0 -50 20 0 0 50c0,16.57 13.43,30 30,30 16.57,0 30,-13.43 30,-30l0 -50 20 0 0 50c0,27.61 -22.39,50 -50,50 -27.61,0 -50,-22.39 -50,-50z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+        <path
+          d="M480 0l0 100 20 0 0 -60c8.36,6.28 18.74,10 30,10 11.26,0 21.64,-3.72 30,-10l0 60 20 0 0 -100 -20 0c0,16.57 -13.43,30 -30,30 -16.57,0 -30,-13.43 -30,-30l-20 0z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+        <path d="M770 20l50 0 0 -20 -50 0c-27.61,0 -50,22.39 -50,50l20 0c0,-16.57 13.43,-30 30,-30z" fill=#e3e3e3
+          filter="url(#inset-shadow)" />
+        <path d="M720 80l0 20 50 0c27.61,0 50,-22.39 50,-50l-20 0c0,16.57 -13.43,30 -30,30l-50 0z" fill=#e3e3e3
+          filter="url(#inset-shadow)" />
+        <path
+          d="M20 50c0,-16.57 13.43,-30 30,-30 16.57,0 30,13.43 30,30l0 30 -30 0c-16.57,0 -30,-13.43 -30,-30zm80 50l0 -50c0,-27.61 -22.39,-50 -50,-50 -27.61,0 -50,22.39 -50,50 0,27.61 22.39,50 50,50l50 0z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+        <path
+          d="M620 50c0,-16.57 13.43,-30 30,-30 16.57,0 30,13.43 30,30l0 30 -30 0c-16.57,0 -30,-13.43 -30,-30zm80 50l0 -50c0,-27.61 -22.39,-50 -50,-50 -27.61,0 -50,22.39 -50,50 0,27.61 22.39,50 50,50l50 0z"
+          fill=#e3e3e3 filter="url(#inset-shadow)" />
+      </g>
+    </svg>
+  </div>
+</body>
+
+</html>

@@ -84,6 +84,8 @@ function init() {
 
                 sites[ id ].site = row.getElementsByTagName( 'site' )[ 0 ].innerHTML;
                 sites[ id ].category = row.getElementsByTagName( 'category' )[ 0 ].innerHTML;
+                sites[ id ].shortDescription = row.getElementsByTagName( 'short_description' )[ 0 ].innerHTML;
+                sites[ id ].url = row.getElementsByTagName( 'http_url' )[ 0 ].innerHTML;
                 sites[ id ].dateInscribed = Number( row.getElementsByTagName( 'date_inscribed' )[ 0 ].innerHTML );
                 sites[ id ].danger = Boolean( row.getElementsByTagName( 'danger' )[ 0 ].innerHTML );
                 sites[ id ].latitude = Number( row.getElementsByTagName( 'latitude' )[ 0 ].innerHTML );
@@ -100,20 +102,28 @@ function init() {
                 sites[ id ].label.position.set( place.x, place.y, place.z );
                 earth.add( sites[ id ].label );
 
+                let option = document.createElement( 'option' );
+                option.innerHTML = sites[ id ].site
+                option.value = id
+                document.querySelector( '#sitesList' ).appendChild( option )
+
                 switch ( sites[ id ].category ) {
                     case 'Natural':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0x00ff00 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-tree"></i><span class="tooltiptext">${ stringToHTML( sites[ id ].site ).innerText }</span>`;
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-tree"></i><span class="tooltiptext">
+                        ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#b7b7a4' )
                         break;
                     case 'Cultural':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xff0000 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-landmark"></i><span class="tooltiptext">${ stringToHTML( sites[ id ].site ).innerText }</span>`;
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-landmark"></i><span class="tooltiptext">
+                        ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ddbea9' )
                         break;
                     case 'Mixed':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xffff00 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"></i><span class="tooltiptext">${ stringToHTML( sites[ id ].site ).innerText }</span>`;
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"></i><span class="tooltiptext">
+                        ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ffe8d6' )
                         break;
                 }
@@ -166,8 +176,10 @@ function init() {
 
 };
 
+// Labels Update Function
+
 function labelsUpdate() {
-    Object.keys( sites ).forEach( id => {
+    Object.keys( sites ).forEach( ( id ) => {
         if ( sites[ id ].label.position.distanceTo( camera.position ) >
             Math.sqrt( ( earth.position.distanceTo( camera.position ) ** 2 ) - ( earthRadius ** 2 ) )
             || sites[ id ].dateInscribed > slider.value
@@ -178,8 +190,6 @@ function labelsUpdate() {
         }
     } );
 }
-
-
 
 function onWindowResize() {
 
@@ -252,3 +262,24 @@ function stringToHTML( str ) {
     return dom;
 };
 
+// Datalist Change
+
+document.querySelector( '#sitesChoice' ).addEventListener( 'change', () => {
+    let selected = document.querySelector( '#sitesChoice' ).value
+    controls.autoRotate = false
+    sites[ selected ].labelDiv.style.color = 'red'
+    camera.position.setFromSphericalCoords(
+        camera.position.distanceTo( earth.position ),
+        sites[ selected ].phi, sites[ selected ].theta
+    )
+    camera.lookAt( earth.position )
+    controls.update();
+
+    document.querySelector( '#siteTitle' ).innerHTML = stringToHTML( sites[ selected ].site ).innerText
+    document.querySelector( '#siteDescription' ).innerHTML = stringToHTML( sites[ selected ].shortDescription ).innerText
+    document.querySelector( '#siteURL' ).href = sites[ selected ].url
+
+    document.querySelector( '#sitesChoice' ).value = ''
+
+
+} );

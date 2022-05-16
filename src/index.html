@@ -19,8 +19,8 @@
           <header>Head</header>
           <div>
             <h1>Unesco Heritage</h1>
-            <h2>Blabla</h2>
-            <p>
+            <h2 id="siteTitle">Blabla</h2>
+            <p id="siteDescription">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ullamcorper sem odio, vel facilisis
               mauris malesuada quis. Nulla condimentum elementum congue. Praesent vehicula, lectus a vestibulum
               imperdiet, odio leo viverra urna, eget faucibus nibh orci eu dolor. Pellentesque vel imperdiet nisi,
@@ -28,12 +28,16 @@
               sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean id turpis libero. Curabitur
               varius maximus mauris quis interdum.
             </p>
+            <a id="siteURL" href="" target="_blank">Click here to see this place at UNESCO Website</a>
+            <div>
+              <label for="sitesChoice">Choose a site:</label>
+              <input list="sitesList" id="sitesChoice" name="sitesChoice" />
+              <datalist id="sitesList"> </datalist>
+            </div>
             <div class="slidercontainer">
               <input type="range" min="1978" max="2022" value="2022" class="slider" id="yearRange" />
               <div class="slider-labels">
-                <div>1978</div>
                 <div id="demo"></div>
-                <div>2022</div>
               </div>
             </div>
           </div>
