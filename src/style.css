@@ -54,8 +54,9 @@ p {
 .navigation {
     width: calc(100vw - 480px);
     height: 100vh;
-    background: radial-gradient(circle, #dee 0%, #edd 100%);
-    background-attachment: fixed;
+    background-image: radial-gradient(circle, #dee 0%, #edd 100%);
+    
+    background-position: center;
 }
 
 .bottom-container {
