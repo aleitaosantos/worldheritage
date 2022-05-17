@@ -6,7 +6,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 
 import './style.css';
 
-let camera, scene, controls, renderer, directionalLight, earth, sun, earthRadius, id, place, sitesListSize, css2DRenderer;
+let camera, scene, controls, renderer, directionalLight, earth, sun, earthRadius, id, activeSite, place, sitesListSize, css2DRenderer;
 
 const { flag } = require( 'country-emoji' );
 const clock = new THREE.Clock();
@@ -106,8 +106,10 @@ function init() {
 
                 sites[ id ].labelDiv.addEventListener( 'pointerdown', () => {
                     id = 'id' + row.getElementsByTagName( 'id_number' )[ 0 ].innerHTML;
+                    activeSite && activeSite.classList.remove( 'active' )
+                    activeSite = sites[ id ].labelDiv
+                    activeSite.classList.add( 'active' )
                     controls.autoRotate = false
-                    sites[ id ].labelDiv.style.color = 'red'
                     camera.position.setFromSphericalCoords(
                         camera.position.distanceTo( earth.position ),
                         sites[ id ].phi, sites[ id ].theta
@@ -118,7 +120,7 @@ function init() {
                     document.querySelector( '#categoryHolder' ).innerHTML = sites[ id ].category
                     document.querySelector( '#dangerHolder' ).innerText = ( sites[ id ].danger ? ' (endangered)' : '' );
                     document.querySelector( '#locationHolder' ).innerHTML = sites[ id ].location
-                    document.querySelector( '#dateHolder' ).innerHTML = sites[ id ].dateInscribed
+                    document.querySelector( '#dateHolder' ).innerHTML = `Inscripted in ${ sites[ id ].dateInscribed }`
                     document.querySelector( '#descriptionHolder' ).innerHTML = stringToHTML( sites[ id ].shortDescription ).innerText
                     document.querySelector( '#siteURL' ).innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"/>'
                     document.querySelector( '#siteURL' ).title = 'Click here to see this place at UNESCO Website'
@@ -138,19 +140,19 @@ function init() {
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0x00ff00 );
                         sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-tree"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
-                        sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#b7b7a4' )
+                        sites[ id ].labelDiv.classList.add( sites[ id ].danger ? 'endangered' : 'natural-site' )
                         break;
                     case 'Cultural':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xff0000 );
                         sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-landmark"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
-                        sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ddbea9' )
+                        sites[ id ].labelDiv.classList.add( sites[ id ].danger ? 'endangered' : 'cultural-site' )
                         break;
                     case 'Mixed':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xffff00 );
                         sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
-                        sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ffe8d6' )
+                        sites[ id ].labelDiv.classList.add( sites[ id ].danger ? 'endangered' : 'mixed-site' )
                         break;
                 }
             }
@@ -291,19 +293,20 @@ function stringToHTML( str ) {
 // Datalist Change
 document.querySelector( '#sitesChoice' ).addEventListener( 'change', () => {
     let selected = document.querySelector( '#sitesChoice' ).value
+    activeSite && activeSite.classList.remove( 'active' )
+    activeSite = sites[ selected ].labelDiv
+    activeSite.classList.add( 'active' )
     controls.autoRotate = false
-    sites[ selected ].labelDiv.style.color = 'red'
     camera.position.setFromSphericalCoords(
         camera.position.distanceTo( earth.position ),
         sites[ selected ].phi, sites[ selected ].theta
     )
     camera.lookAt( earth.position )
-    controls.update();
     document.querySelector( '#titleHolder' ).innerHTML = stringToHTML( sites[ selected ].site ).innerText
     document.querySelector( '#categoryHolder' ).innerHTML = sites[ selected ].category
     document.querySelector( '#dangerHolder' ).innerText = ( sites[ selected ].danger ? ' (endangered)' : '' );
     document.querySelector( '#locationHolder' ).innerHTML = sites[ selected ].location
-    document.querySelector( '#dateHolder' ).innerHTML = sites[ selected ].dateInscribed
+    document.querySelector( '#dateHolder' ).innerText = `Inscripted in ${ sites[ selected ].dateInscribed }`
     document.querySelector( '#descriptionHolder' ).innerHTML = stringToHTML( sites[ selected ].shortDescription ).innerText
     document.querySelector( '#siteURL' ).innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"/>'
     document.querySelector( '#siteURL' ).title = 'Click here to see this place at UNESCO Website'

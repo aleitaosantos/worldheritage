@@ -58,7 +58,7 @@ p {
     background-attachment: fixed;
 }
 
-footer {
+.bottom-container {
     font-family: 'Archivo Narrow', sans-serif;
     color: #544;
     margin-bottom: 0.5em;
@@ -72,10 +72,10 @@ footer {
     -webkit-text-stroke: 1px #333;
 }
 
-.label:hover {
+/* .label:hover {
     -webkit-text-stroke: 1px #fff;
     cursor: pointer;    
-}
+} */
 
 /* .label:hover + i {
   
@@ -165,10 +165,10 @@ input {
     appearance: none;
     width: 10px; /* Set a specific slider handle width */
     height: 10px; /* Slider handle height */
-    background: #544; /* Green background */
+    background: #f3f3f3; /* Green background */
     border-radius: 50%;
     cursor: pointer; /* Cursor on hover */
-    box-shadow: 3px 3px 6px #abb, -3px -3px 6px #fff;
+    box-shadow: 3px 3px 6px #9aa, -3px -3px 6px #fff;
     
 }
   
@@ -186,4 +186,41 @@ input::placeholder {
   
 #locationHolder {
     font-family: 'Noto Emoji', sans-serif;
+}
+
+#siteURL {
+    color: #544;
+    transition: all 0.5s;
+}
+
+#siteURL:hover {
+    color: #988;
+}
+
+.natural-site {
+    color: #b7b7a4;
+}
+
+.cultural-site {
+    color: #ddbea9;
+}
+
+.mixed-site {
+    color: #ffe8d6;
+}
+
+.endangered {
+    color: #b88181;
+}
+
+.natural-site:hover, .cultural-site:hover, .mixed-site:hover, .endangered:hover {
+    z-index: 2000000000;
+    -webkit-text-stroke: 1px #fff;
+    cursor: pointer; 
+}
+
+.active {
+    color: #eee;
+    -webkit-text-stroke: 1px #fff;
+    z-index: 2000000000;
 }
