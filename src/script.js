@@ -8,6 +8,7 @@ import './style.css';
 
 let camera, scene, controls, renderer, directionalLight, earth, sun, earthRadius, id, place, sitesListSize, css2DRenderer;
 
+const { flag } = require( 'country-emoji' );
 const clock = new THREE.Clock();
 const textureLoader = new THREE.TextureLoader();
 const sites = {};
@@ -84,6 +85,9 @@ function init() {
 
                 sites[ id ].site = row.getElementsByTagName( 'site' )[ 0 ].innerHTML;
                 sites[ id ].category = row.getElementsByTagName( 'category' )[ 0 ].innerHTML;
+                let flagsArray = ( row.getElementsByTagName( 'iso_code' )[ 0 ].innerHTML ).split( ',' )
+                flagsArray.forEach( function ( item, index, array ) { array[ index ] = flag( item ) } )
+                sites[ id ].location = flagsArray.join( ' ' );
                 sites[ id ].shortDescription = row.getElementsByTagName( 'short_description' )[ 0 ].innerHTML;
                 sites[ id ].url = row.getElementsByTagName( 'http_url' )[ 0 ].innerHTML;
                 sites[ id ].dateInscribed = Number( row.getElementsByTagName( 'date_inscribed' )[ 0 ].innerHTML );
@@ -97,14 +101,31 @@ function init() {
 
                 sites[ id ].labelDiv = document.createElement( 'div' );
                 sites[ id ].labelDiv.className = 'label tooltip';
-                sites[ id ].labelDiv.id = id;
                 sites[ id ].label = new CSS2DObject( sites[ id ].labelDiv );
                 sites[ id ].label.position.set( place.x, place.y, place.z );
-                setTimeout( () => {
-                    document.getElementById( id ).addEventListener( 'click', () => { console.log( 'click' ) } )
-                }, 1000 );
 
-                // document.querySelector( '#' + id ).addEventListener( 'click', () => { console.log( 'click' ) } );
+                sites[ id ].labelDiv.addEventListener( 'pointerdown', () => {
+                    id = 'id' + row.getElementsByTagName( 'id_number' )[ 0 ].innerHTML;
+                    controls.autoRotate = false
+                    sites[ id ].labelDiv.style.color = 'red'
+                    camera.position.setFromSphericalCoords(
+                        camera.position.distanceTo( earth.position ),
+                        sites[ id ].phi, sites[ id ].theta
+                    )
+                    camera.lookAt( earth.position )
+                    controls.update();
+                    document.querySelector( '#titleHolder' ).innerHTML = stringToHTML( sites[ id ].site ).innerText
+                    document.querySelector( '#categoryHolder' ).innerHTML = sites[ id ].category
+                    document.querySelector( '#dangerHolder' ).innerText = ( sites[ id ].danger ? ' (endangered)' : '' );
+                    document.querySelector( '#locationHolder' ).innerHTML = sites[ id ].location
+                    document.querySelector( '#dateHolder' ).innerHTML = sites[ id ].dateInscribed
+                    document.querySelector( '#descriptionHolder' ).innerHTML = stringToHTML( sites[ id ].shortDescription ).innerText
+                    document.querySelector( '#siteURL' ).innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"/>'
+                    document.querySelector( '#siteURL' ).title = 'Click here to see this place at UNESCO Website'
+                    document.querySelector( '#siteURL' ).href = sites[ id ].url
+                    document.querySelector( '#sitesChoice' ).value = ''
+                } )
+
                 earth.add( sites[ id ].label );
 
                 let option = document.createElement( 'option' );
@@ -268,7 +289,6 @@ function stringToHTML( str ) {
 };
 
 // Datalist Change
-
 document.querySelector( '#sitesChoice' ).addEventListener( 'change', () => {
     let selected = document.querySelector( '#sitesChoice' ).value
     controls.autoRotate = false
@@ -279,14 +299,14 @@ document.querySelector( '#sitesChoice' ).addEventListener( 'change', () => {
     )
     camera.lookAt( earth.position )
     controls.update();
-
-    document.querySelector( '#siteTitle' ).innerHTML = stringToHTML( sites[ selected ].site ).innerText
-    document.querySelector( '#siteDescription' ).innerHTML = stringToHTML( sites[ selected ].shortDescription ).innerText
+    document.querySelector( '#titleHolder' ).innerHTML = stringToHTML( sites[ selected ].site ).innerText
+    document.querySelector( '#categoryHolder' ).innerHTML = sites[ selected ].category
+    document.querySelector( '#dangerHolder' ).innerText = ( sites[ selected ].danger ? ' (endangered)' : '' );
+    document.querySelector( '#locationHolder' ).innerHTML = sites[ selected ].location
+    document.querySelector( '#dateHolder' ).innerHTML = sites[ selected ].dateInscribed
+    document.querySelector( '#descriptionHolder' ).innerHTML = stringToHTML( sites[ selected ].shortDescription ).innerText
     document.querySelector( '#siteURL' ).innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"/>'
     document.querySelector( '#siteURL' ).title = 'Click here to see this place at UNESCO Website'
     document.querySelector( '#siteURL' ).href = sites[ selected ].url
-
     document.querySelector( '#sitesChoice' ).value = ''
-
-
-} );
+} )

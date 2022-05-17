@@ -184,3 +184,6 @@ input::placeholder {
     font-family: 'Archivo Narrow', sans-serif;
   }
   
+#locationHolder {
+    font-family: 'Noto Emoji', sans-serif;
+}
