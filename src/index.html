@@ -15,36 +15,30 @@
   <body>
     <div class="container">
       <div class="console">
-        <div class="content">
-          <header>Head</header>
+        <div class="top-container">
+          <header>
+            <h1>World Heritage Atlas</h1>
+            <p>From UNESCO World Heritage List</p>
+          </header>
           <div>
-            <h1>Unesco Heritage</h1>
-            <h2 id="siteTitle">Blabla</h2>
-            <p id="siteDescription">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ullamcorper sem odio, vel facilisis
-              mauris malesuada quis. Nulla condimentum elementum congue. Praesent vehicula, lectus a vestibulum
-              imperdiet, odio leo viverra urna, eget faucibus nibh orci eu dolor. Pellentesque vel imperdiet nisi,
-              vehicula ultrices tortor. In enim enim, molestie non egestas eu, tincidunt a quam. Class aptent taciti
-              sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean id turpis libero. Curabitur
-              varius maximus mauris quis interdum.
-            </p>
-            <a id="siteURL" href="" target="_blank">Click here to see this place at UNESCO Website</a>
             <div>
-              <label for="sitesChoice">Choose a site:</label>
-              <input list="sitesList" id="sitesChoice" name="sitesChoice" />
+              <input list="sitesList" id="sitesChoice" name="sitesChoice" placeholder="Choose a site..." />
               <datalist id="sitesList"> </datalist>
             </div>
-            <div class="slidercontainer">
-              <input type="range" min="1978" max="2022" value="2022" class="slider" id="yearRange" />
-              <div class="slider-labels">
-                <div id="demo"></div>
-              </div>
-            </div>
+            <h2 id="siteTitle"></h2>
+            <p id="siteDescription"></p>
+            <a id="siteURL" href="" target="_blank"></a>
           </div>
         </div>
-        <footer>
-          Copyright © 1992 - <span id="currentYear"></span> UNESCO/World Heritage Centre. All rights reserved.
-        </footer>
+        <div class="bottom-container">
+          <input type="range" min="1978" max="2022" value="2022" class="slider" id="yearRange" />
+          <div class="slider-labels">
+            <div id="demo"></div>
+          </div>
+          <footer>
+            Copyright © 1992 - <span id="currentYear"></span> UNESCO/World Heritage Centre. All rights reserved.
+          </footer>
+        </div>
       </div>
       <div class="navigation"></div>
     </div>

@@ -16,20 +16,28 @@ body {
 
 h1 {
     font-family: 'Tenor Sans', sans-serif;
-    color: #968c8c;
-    margin-bottom: 1em;
+    color: #988;    
+}
+
+h1+p {
+    margin-bottom: 5em;    
 }
 
 h2 {
+    margin-top: 1em;
+    font-size: 1.25em;
     font-family: 'Tenor Sans', sans-serif;
-    color: #555050;
+    color: #544;
     margin-bottom: 0.5em;
 }
 
 p {
     font-family: 'Archivo Narrow', sans-serif;
-    color: #555050;
+    color: #544;
     margin-bottom: 1em;
+    font-size: 1em;
+    text-align: justify;
+    text-justify:distribute;    
 }
 
 .console {
@@ -39,20 +47,20 @@ p {
     width: 400px;
     height: calc(100vh - 80px);
     padding: 40px;
-    background-color: white;
+    background-color: #f3f3f3;
 
 }
 
 .navigation {
     width: calc(100vw - 480px);
     height: 100vh;
-    background: radial-gradient(circle, #dae5e5 0%, #e5dada 100%);
+    background: radial-gradient(circle, #dee 0%, #edd 100%);
     background-attachment: fixed;
 }
 
 footer {
     font-family: 'Archivo Narrow', sans-serif;
-    color: #555050;
+    color: #544;
     margin-bottom: 0.5em;
     font-size: small;
 }
@@ -69,6 +77,11 @@ footer {
     cursor: pointer;    
 }
 
+/* .label:hover + i {
+  
+    z-index: 2147483647;
+} */
+
 .tooltip {
     position: relative;
     display: inline-block;   
@@ -83,7 +96,7 @@ footer {
     margin-left: -60px;
     margin-bottom: 10px; 
     background-color: #fff;
-    color: #555050;
+    color: #544;
     text-align: center;
     border: 1px solid white;
     border-radius: 5px;
@@ -109,8 +122,19 @@ footer {
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+    visibility: visible;    
 }
+
+input {
+    background: #f3f3f3;
+    border: none;
+    padding: 10px;
+    height: 10px;
+    width: calc(100% - 20px);
+    font-size: 14px;
+    border-radius: 50px;
+    box-shadow: inset 3px 3px 6px #dcc, inset -3px -3px 6px #ffffff;
+  }
 
 .slidercontainer {
     width: 100%;
@@ -120,7 +144,7 @@ footer {
     display: flex;    
     justify-content: center;
     font-family: 'Archivo Narrow', sans-serif;
-    color: #555050;
+    color: #544;
     margin-bottom: 0.5em;
     font-size: small;
 }
@@ -128,10 +152,9 @@ footer {
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
-    width: 100%; /* Full-width */
-    height: 2px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
+    background: #f3f3f3; /* Grey background */
     outline: none; /* Remove outline */
+    padding: 5px;
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
@@ -142,15 +165,22 @@ footer {
     appearance: none;
     width: 10px; /* Set a specific slider handle width */
     height: 10px; /* Slider handle height */
+    background: #544; /* Green background */
     border-radius: 50%;
-    background: #555050; /* Green background */
     cursor: pointer; /* Cursor on hover */
+    box-shadow: 3px 3px 6px #abb, -3px -3px 6px #fff;
     
 }
   
 .slider::-moz-range-thumb {
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #555050; /* Green background */
+    background: #f3f3f3; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
+
+input::placeholder {
+    color: #988;
+    font-family: 'Archivo Narrow', sans-serif;
+  }
+  

@@ -97,9 +97,14 @@ function init() {
 
                 sites[ id ].labelDiv = document.createElement( 'div' );
                 sites[ id ].labelDiv.className = 'label tooltip';
-                sites[ id ].labelDiv.addEventListener( 'click', () => { console.log( 'click' ) } );
+                sites[ id ].labelDiv.id = id;
                 sites[ id ].label = new CSS2DObject( sites[ id ].labelDiv );
                 sites[ id ].label.position.set( place.x, place.y, place.z );
+                setTimeout( () => {
+                    document.getElementById( id ).addEventListener( 'click', () => { console.log( 'click' ) } )
+                }, 1000 );
+
+                // document.querySelector( '#' + id ).addEventListener( 'click', () => { console.log( 'click' ) } );
                 earth.add( sites[ id ].label );
 
                 let option = document.createElement( 'option' );
@@ -110,19 +115,19 @@ function init() {
                 switch ( sites[ id ].category ) {
                     case 'Natural':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0x00ff00 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-tree"></i><span class="tooltiptext">
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-tree"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#b7b7a4' )
                         break;
                     case 'Cultural':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xff0000 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-landmark"></i><span class="tooltiptext">
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-landmark"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ddbea9' )
                         break;
                     case 'Mixed':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xffff00 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"></i><span class="tooltiptext">
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.style.color = ( sites[ id ].danger ? '#b88181' : '#ffe8d6' )
                         break;
@@ -277,6 +282,8 @@ document.querySelector( '#sitesChoice' ).addEventListener( 'change', () => {
 
     document.querySelector( '#siteTitle' ).innerHTML = stringToHTML( sites[ selected ].site ).innerText
     document.querySelector( '#siteDescription' ).innerHTML = stringToHTML( sites[ selected ].shortDescription ).innerText
+    document.querySelector( '#siteURL' ).innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"/>'
+    document.querySelector( '#siteURL' ).title = 'Click here to see this place at UNESCO Website'
     document.querySelector( '#siteURL' ).href = sites[ selected ].url
 
     document.querySelector( '#sitesChoice' ).value = ''
