@@ -23,6 +23,8 @@ const sizes = {
 init();
 animate();
 
+window.addEventListener( 'load', () => { document.querySelector( '#loadingScreen' ).style.visibility = 'hidden' } );
+
 function init() {
 
     // Scene
@@ -194,8 +196,11 @@ function init() {
     controls.rotateSpeed = Math.sqrt( earth.position.distanceTo( camera.position ) - 1 );
     canvas.addEventListener(
         'click',
-        () => { controls.autoRotate = false },
-        { once: true }
+        () => { controls.autoRotate = false }
+    )
+    canvas.addEventListener(
+        'dblclick',
+        () => { controls.autoRotate = true }
     )
 
     //
