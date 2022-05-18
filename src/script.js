@@ -152,7 +152,7 @@ function init() {
                         break;
                     case 'Mixed':
                         // sites[ id ][ 'siteMaterial' ].color = new THREE.Color( 0xffff00 );
-                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-circle-plus"/><span class="tooltiptext">
+                        sites[ id ].labelDiv.innerHTML = `<i class="fa-solid fa-diamond"/><span class="tooltiptext">
                         ${ stringToHTML( sites[ id ].site ).innerText }</span>`;
                         sites[ id ].labelDiv.classList.add( sites[ id ].danger ? 'endangered' : 'mixed-site' )
                         break;
