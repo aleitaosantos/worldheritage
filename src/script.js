@@ -163,8 +163,6 @@ function init() {
     xhr.open( 'GET', sitesSrc );
     xhr.send();
 
-    console.log( sites );
-
     //
 
     // WebGL Renderer
