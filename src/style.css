@@ -216,7 +216,7 @@ input::placeholder {
 }
 
 #locationHolder {
-    font-family: 'Noto Emoji', sans-serif;
+    font-family: initial;
 }
 
 #siteURL {
