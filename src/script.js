@@ -85,18 +85,13 @@ function init() {
 
                 sites[ id ].site = row.getElementsByTagName( 'site' )[ 0 ].innerHTML;
                 sites[ id ].category = row.getElementsByTagName( 'category' )[ 0 ].innerHTML;
+                
                 let flagsArray = ( row.getElementsByTagName( 'iso_code' )[ 0 ].innerHTML ).split( ',' )
-                // flagsArray.forEach( ( item, index, array ) => {
-                //     array[ index ] = String.fromCodePoint(
-                //         ...item.toUpperCase().split( '' ).map( char => 127397 + char.charCodeAt() )
-                //     )
-                // } )
-
                 flagsArray.forEach( ( item, index, array ) => {
                     array[ index ] = String.fromCodePoint( ...[ ...item.toUpperCase() ].map( x => 0x1f1a5 + x.charCodeAt() ) )
                 } )
-
                 sites[ id ].location = flagsArray.join( ' ' );
+
                 sites[ id ].shortDescription = row.getElementsByTagName( 'short_description' )[ 0 ].innerHTML;
                 sites[ id ].url = row.getElementsByTagName( 'http_url' )[ 0 ].innerHTML;
                 sites[ id ].dateInscribed = Number( row.getElementsByTagName( 'date_inscribed' )[ 0 ].innerHTML );
